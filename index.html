@@ -30,7 +30,7 @@ h1,h2,h3{margin:0;font-weight:650}
 .side{position:fixed;inset-block:0;inset-inline-start:0;width:238px;background:var(--rail);color:var(--rail-text);padding:22px 14px 14px;display:flex;flex-direction:column;z-index:20}
 .brand{display:flex;justify-content:center;align-items:center;padding:4px 8px 18px;color:#f4f1e8}
 .brand-logo{width:148px;height:auto;display:block}
-.mlogo{display:none;height:32px;width:auto}
+.mlogo{height:34px;width:auto;display:block;flex:none}.mbrand{display:none;align-items:center;gap:8px;flex:none;color:var(--gold)}.mbrand span{display:grid;line-height:1}.mbrand b{font:600 21px/1 Georgia,'Times New Roman',serif;letter-spacing:2.5px}.mbrand small{font:600 8.5px/1 'Segoe UI',system-ui,sans-serif;letter-spacing:3.4px;margin-top:4px;padding-inline-start:1px}.fbtn{display:none}.about-dev{display:flex;flex-direction:column;gap:2px;margin:0 0 10px}.about-dev b{align-self:flex-start;font:600 20px Georgia,'Times New Roman',serif;letter-spacing:2.5px;color:var(--gold-strong)}
 .brand-mark{width:40px;height:40px;border:1px solid #bd9945;color:#dabb70;display:grid;place-items:center;font:600 22px Georgia,serif;border-radius:4px;flex:none;overflow:hidden}
 .brand-mark img{width:100%;height:100%;object-fit:contain}
 .brand b{display:block;letter-spacing:1.5px;font-size:15px}
@@ -175,8 +175,9 @@ svg.chart text{fill:var(--muted);font-size:11px;font-family:inherit}
 .side{display:none}.main{margin:0}
 .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;inset-inline:0;bottom:0;background:var(--rail);z-index:30;padding-bottom:env(safe-area-inset-bottom)}
 .tabbar a,.tabbar button{border:0;background:transparent;color:var(--rail-text);display:grid;justify-items:center;gap:2px;padding:8px 2px 7px;font-size:10.5px;text-decoration:none}
-.tabbar .on{color:var(--rail-gold)}
-.view{padding-bottom:96px}.top{min-height:62px}.mlogo{display:block}.top h1{font-size:18px}.chip span{display:none}.chip{padding:6px}
+.tabbar .on{color:var(--rail-gold)}.tabbar span{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.view{padding-bottom:96px}.top{min-height:64px;padding-block:8px;gap:8px}.mbrand{display:flex}.top h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.top .sp,.top h1{flex:0}.mbrand{margin-inline-end:auto}.chip span{display:none}.chip{padding:6px}.view{padding-top:16px}
+.fbtn{display:inline-flex;align-items:center;gap:8px;margin-bottom:10px}.fbtn.on{border-color:var(--gold);color:var(--gold-strong)}.fclosed{display:none}
 .foot{display:none}
 .g2,.g3,.g4{grid-template-columns:1fr}.span2{grid-column:auto}
 .filters{grid-template-columns:1fr 1fr;gap:10px}.filters .fld:first-child{grid-column:span 2}.filters .dp .ibtn{display:none}
@@ -209,7 +210,7 @@ svg.chart text{fill:var(--muted);font-size:11px;font-family:inherit}
    =================================================================== */
 'use strict';
 var AF = (function () {
-  const APP = { name: 'AZIZI Business', version: '1.0.0', schemaVersion: 1, format: 'azizi-finance' };
+  const APP = { name: 'AZIZI Business', version: '1.1.0', schemaVersion: 1, format: 'azizi-finance' };
   const ACCOUNT_TYPES = ['bank', 'cash', 'brokerage', 'investment', 'custom'];
   const TX_TYPES = ['income', 'expense', 'transfer_internal', 'transfer_external', 'debt_payment', 'receivable_collection', 'adjustment'];
   const CONTACT_TYPES = ['individual', 'company', 'bank', 'insurance', 'brokerage', 'other'];
@@ -1222,6 +1223,7 @@ const I18N = (() => {
     ['nav.accounts', 'حساب‌ها', 'Accounts'],
     ['nav.transactions', 'تراکنش‌ها', 'Transactions'],
     ['nav.debts', 'بدهی و طلب', 'Debts & receivables'],
+    ['nav.debtsShort', 'بدهی و طلب', 'Debts'],
     ['nav.contacts', 'مخاطبین', 'Contacts'],
     ['nav.reports', 'گزارش‌ها', 'Reports'],
     ['nav.invoices', 'فاکتور و رسید', 'Invoices & receipts'],
@@ -1248,6 +1250,7 @@ const I18N = (() => {
     ['common.ok', 'تأیید', 'OK'],
     ['common.other', 'سایر', 'Other'],
     ['common.reset', 'بازنشانی', 'Reset'],
+    ['tx.filters', 'فیلترها', 'Filters'],
     ['common.save', 'ذخیره', 'Save'],
     ['common.saved', 'ذخیره شد.', 'Saved.'],
     ['common.search', 'جستجو', 'Search'],
@@ -1693,6 +1696,7 @@ const I18N = (() => {
     ['demo.confirm', 'داده‌های فعلی با داده نمونه جایگزین می‌شوند. ادامه می‌دهید؟', 'Current data will be replaced by sample data. Continue?'],
     ['demo.loaded', 'داده نمونه بارگذاری شد.', 'Sample data loaded.'],
     ['about.title', 'درباره', 'About'],
+    ['about.developer', 'برنامه‌نویس و سازنده', 'Developer & Creator'],
     ['about.privacy', 'هیچ داده‌ای به سرور ارسال نمی‌شود.', 'No data is ever sent to a server.'],
 
     ['date.today', 'امروز', 'Today'],
@@ -1812,6 +1816,7 @@ function tl(lang, k, p) {
 const num = n => toLocaleDigits(String(n), S().numerals);
 
 const ICON = {
+  filter: '<path d="M3 5h18l-7 8v6l-4-2v-4z"/>',
   grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
   wallet: '<path d="M3 7a2 2 0 0 1 2-2h13v4"/><path d="M3 7v11a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1H5a2 2 0 0 1-2-2z"/><circle cx="16.5" cy="14.5" r="1"/>',
   swap: '<path d="M7 7h13l-4-4"/><path d="M17 17H4l4 4"/>',
@@ -2107,9 +2112,9 @@ function route() { const h = location.hash.replace(/^#\/?/, ''); const [name, ar
 function shell(r, v) {
   const nav = NAV.map(([id, i]) => '<a href="#/' + id + '" class="' + (r.name === id ? 'on' : '') + '">' + ic(i) + '<span>' + esc(t('nav.' + id)) + '</span></a>').join('');
   const main4 = ['dashboard', 'accounts', 'transactions', 'debts'];
-  const tab = main4.map(id => '<a href="#/' + id + '" class="' + (r.name === id ? 'on' : '') + '">' + ic(NAV.find(n => n[0] === id)[1]) + '<span>' + esc(t('nav.' + id)) + '</span></a>').join('') + '<button type="button" data-act="moreMenu" class="' + (main4.includes(r.name) ? '' : 'on') + '">' + ic('more') + '<span>' + esc(t('nav.more')) + '</span></button>';
+  const tab = main4.map(id => '<a href="#/' + id + '" class="' + (r.name === id ? 'on' : '') + '">' + ic(NAV.find(n => n[0] === id)[1]) + '<span>' + esc(t(id === 'debts' ? 'nav.debtsShort' : 'nav.' + id)) + '</span></a>').join('') + '<button type="button" data-act="moreMenu" class="' + (main4.includes(r.name) ? '' : 'on') + '">' + ic('more') + '<span>' + esc(t('nav.more')) + '</span></button>';
   const themeIcon = resolveTheme(S().theme, sysDark()) === 'dark' ? 'sun' : 'moon';
-  return '<div class="app"><aside class="side"><div class="brand"><img class="brand-logo" src="' + BRAND.full + '" alt="AZIZI Business"></div><nav class="nav" aria-label="' + esc(t('nav.main')) + '">' + nav + '</nav><div class="side-foot">BUILD. MANAGE. GROW.<br>v' + APP.version + '</div></aside><div class="main"><header class="top"><img class="mlogo" src="' + BRAND.mark + '" alt="AZIZI Business"><h1>' + esc(v.title) + '</h1><button type="button" id="chip" class="chip" data-act="chipClick"></button>' + (STATE.installEvt ? '<button type="button" class="btn sm" data-act="installApp">' + esc(t('pwa.install')) + '</button>' : '') + '<button type="button" class="ibtn" data-act="toggleLang" title="' + esc(t('quick.lang')) + '" aria-label="' + esc(t('quick.lang')) + '"><b style="font-size:12px">' + (LANG() === 'fa' ? 'EN' : 'فا') + '</b></button><button type="button" class="ibtn" data-act="toggleTheme" title="' + esc(t('quick.theme')) + '" aria-label="' + esc(t('quick.theme')) + '">' + ic(themeIcon) + '</button></header><main class="view" id="view">' + v.html + '</main><footer class="foot"><span>AZIZI Business — BUILD. MANAGE. GROW.</span><span>' + esc(t('footer.local')) + '</span></footer></div><nav class="tabbar" aria-label="' + esc(t('nav.main')) + '">' + tab + '</nav></div>';
+  return '<div class="app"><aside class="side"><div class="brand"><img class="brand-logo" src="' + BRAND.full + '" alt="AZIZI Business"></div><nav class="nav" aria-label="' + esc(t('nav.main')) + '">' + nav + '</nav><div class="side-foot">BUILD. MANAGE. GROW.<br>v' + APP.version + '</div></aside><div class="main"><header class="top"><div class="mbrand" aria-label="AZIZI Business"><img class="mlogo" src="' + BRAND.mark + '" alt=""><span dir="ltr"><b>AZIZI</b><small>BUSINESS</small></span></div><h1>' + esc(v.title) + '</h1><button type="button" id="chip" class="chip" data-act="chipClick"></button>' + (STATE.installEvt ? '<button type="button" class="btn sm" data-act="installApp">' + esc(t('pwa.install')) + '</button>' : '') + '<button type="button" class="ibtn" data-act="toggleLang" title="' + esc(t('quick.lang')) + '" aria-label="' + esc(t('quick.lang')) + '"><b style="font-size:12px">' + (LANG() === 'fa' ? 'EN' : 'فا') + '</b></button><button type="button" class="ibtn" data-act="toggleTheme" title="' + esc(t('quick.theme')) + '" aria-label="' + esc(t('quick.theme')) + '">' + ic(themeIcon) + '</button></header><main class="view" id="view">' + v.html + '</main><footer class="foot"><span>AZIZI Business — BUILD. MANAGE. GROW.</span><span>' + esc(t('footer.local')) + '</span></footer></div><nav class="tabbar" aria-label="' + esc(t('nav.main')) + '">' + tab + '</nav></div>';
 }
 let lastRouteKey = '';
 function render() {
@@ -2367,7 +2372,8 @@ function txResults() {
 VIEWS.transactions = () => {
   const db = STATE.db, f = STATE.ui.tx.f, cats = categoriesUsed(db);
   const hasCur = !!f.currency;
-  const filters = '<form class="card noprint" data-chg="txFilter" data-inp="txFilterInp" onsubmit="return false"><div class="filters">' +
+  const fo = !!STATE.ui.tx.filtersOpen; const nAct = ['accountId', 'type', 'currency', 'category', 'contactId', 'from', 'to', 'min', 'max'].filter(k => f[k]).length;
+  const filters = '<button type="button" class="btn fbtn noprint' + (fo ? ' on' : '') + '" data-act="txFilters" aria-expanded="' + fo + '">' + ic('filter') + esc(t('tx.filters')) + (nAct ? ' <span class="badge">' + num(nAct) + '</span>' : '') + '</button><form class="card noprint' + (fo ? '' : ' fclosed') + '" data-chg="txFilter" data-inp="txFilterInp" onsubmit="return false"><div class="filters">' +
     fld(t('common.search'), '<input type="search" id="txq" name="q" value="' + esc(f.q) + '" placeholder="' + esc(t('tx.searchHint')) + '">') +
     fld(t('field.account'), '<select name="accountId">' + accOpts(f.accountId, null, t('common.all')) + '</select>') +
     fld(t('field.type'), '<select name="type">' + opt('', t('common.all'), f.type) + TX_TYPES.map(x => opt(x, t('type.' + x), f.type)).join('') + '</select>') +
@@ -2383,6 +2389,7 @@ VIEWS.transactions = () => {
 let txSearchTimer = null;
 CHG.txFilter = form => { const f = STATE.ui.tx.f, e = form.elements; for (const k of ['accountId', 'type', 'currency', 'category', 'contactId', 'from', 'to', 'min', 'max']) if (e[k]) f[k] = e[k].value; if (!f.currency) { f.min = ''; f.max = ''; } STATE.ui.tx.limit = 100; render(); };
 CHG.txFilterInp = (form, ev) => { if (ev.target.name === 'q' || ev.target.name === 'min' || ev.target.name === 'max') { clearTimeout(txSearchTimer); txSearchTimer = setTimeout(() => { const f = STATE.ui.tx.f; f[ev.target.name] = ev.target.value; STATE.ui.tx.limit = 100; const el = $('#txres'); if (el) el.innerHTML = txResults(); }, 220); } };
+ACT.txFilters = () => { STATE.ui.tx.filtersOpen = !STATE.ui.tx.filtersOpen; render(); };
 ACT.txReset = () => { STATE.ui.tx.f = { q: '', accountId: '', type: '', currency: '', category: '', contactId: '', from: '', to: '', min: '', max: '' }; STATE.ui.tx.limit = 100; render(); };
 ACT.txMore = () => { STATE.ui.tx.limit += 100; const el = $('#txres'); if (el) el.innerHTML = txResults(); };
 
@@ -2873,7 +2880,7 @@ function settingsData() {
     '<div class="card"><h2 style="margin-bottom:12px">' + esc(t('tests.title')) + '</h2><p class="muted small">' + esc(t('tests.help')) + '</p><button class="btn" data-act="runTests">' + esc(t('tests.run')) + '</button></div>' +
     '<div class="card"><h2 style="margin-bottom:12px">' + esc(t('demo.title')) + '</h2><p class="muted small">' + esc(t('demo.note')) + '</p><button class="btn" data-act="loadDemo">' + esc(t('demo.load')) + '</button></div>' +
     '<div class="card" style="grid-column:1/-1;border-color:var(--danger)"><h2 style="margin-bottom:8px">' + esc(t('data.erase')) + '</h2><p class="muted small">' + esc(t('data.eraseHelp')) + '</p><button class="btn dng" data-act="eraseAll">' + ic('trash') + esc(t('data.eraseBtn')) + '</button></div>' +
-    '<div class="card" style="grid-column:1/-1"><h2 style="margin-bottom:8px">' + esc(t('about.title')) + '</h2><p class="small muted">AZIZI Business v' + APP.version + ' · schema ' + APP.schemaVersion + ' · AZIZI Business — BUILD. MANAGE. GROW.<br>' + esc(t('about.privacy')) + '</p></div></div>';
+    '<div class="card" style="grid-column:1/-1"><h2 style="margin-bottom:8px">' + esc(t('about.title')) + '</h2><p class="about-dev"><span class="muted small">' + esc(t('about.developer')) + '</span><b dir="ltr">MOSTAFA AZIZI</b></p><p class="small muted"><span dir="ltr" style="display:inline-block">AZIZI Business v' + APP.version + ' · schema ' + APP.schemaVersion + ' · AZIZI Business — BUILD. MANAGE. GROW.</span><br>' + esc(t('about.privacy')) + '</p></div></div>';
 }
 ACT.dataCheck = () => {
   const v = validateDb(JSON.parse(JSON.stringify(STATE.db))); const bal = computeBalances(STATE.db); let bad = 0; for (const a of STATE.db.accounts) if (!Number.isSafeInteger(bal.get(a.id))) bad++;
