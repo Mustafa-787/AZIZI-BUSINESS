@@ -1,36 +1,20 @@
-## Brand Identity – AZIZI Business
+# AZIZI Business — راهنمای راه‌اندازی
 
-AZIZI Business is the parent brand for a growing ecosystem of financial and business software products.
+## ساده‌ترین راه (بدون سرور)
+فایل `index.html` را دوبار کلیک کنید تا در مرورگر (Chrome/Edge) باز شود. همه‌چیز کار می‌کند.
+برای ذخیرهٔ دائمی: Settings ← Storage ← انتخاب/ساخت فایل JSON (نیاز به Chrome یا Edge)، و مرتب Backup بگیرید.
 
-### Parent Brand
-- Brand Name: AZIZI Business
-- Industry: Software Development & Financial Technology
-- Brand Positioning: Professional, reliable, modern, and scalable.
-- Brand Philosophy: Build. Manage. Grow.
-- Primary Colors: Black, Gold, and White.
+## اجرای محلی با سرور (برای نصب به‌صورت اپ)
+- ویندوز: `start-windows.bat` (نیاز به Python)
+- مک/لینوکس: `./start-mac-linux.sh`
+سپس در Chrome/Edge از منوی مرورگر «Install app» را بزنید.
 
-### Brand Architecture
+## انتشار آنلاین (PWA)
+کل پوشه را روی یک هاست با HTTPS آپلود کنید (Netlify, Vercel, Cloudflare Pages, GitHub Pages).
+فایل‌ها: index.html، sw.js، manifest.webmanifest، پوشهٔ icons، و _headers (برای Netlify/Cloudflare).
+بعد از انتشار، اپ قابل نصب و آفلاین‌پذیر است.
 
-AZIZI Business is the parent brand.
-
-Its product portfolio includes:
-
-1. AZIZI Finance – Personal Accounting and Financial Management.
-2. AZIZI Invest – Investment and Asset Management.
-3. AZIZI Analytics – Financial Data Analysis and Reporting.
-
-Additional products may be introduced under the AZIZI Business identity.
-
-### Logo and Visual Identity
-- The original two-deer emblem is a permanent and essential part of the brand identity.
-- Never remove or replace the two-deer symbol without explicit approval.
-- Product-specific subtitles and visual elements may be customized.
-- Maintain consistent typography, colors, and visual quality across all products.
-
-### Naming Convention
-All future products should follow the AZIZI naming system.
-
-AZIZI Business must remain the parent brand, while individual applications maintain their own product identities.
-
-### Brand Slogan
-BUILD. MANAGE. GROW.
+## نکات
+- داده‌ها فقط روی دستگاه شما می‌مانند (IndexedDB + فایل JSON انتخابی). سروری وجود ندارد.
+- با پاک‌کردن اطلاعات مرورگر، دادهٔ داخل مرورگر پاک می‌شود؛ حتماً فایل پشتیبان نگه دارید.
+- sw.js و index.html باید کنار هم و در یک پوشه باشند.
